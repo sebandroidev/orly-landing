@@ -99,3 +99,7 @@ npm run lint    # ESLint
 - **fix**: Escape `<` as `\u003c` in JSON-LD serialization (`app/page.tsx`) to prevent `</script>` injection
 - **fix**: Add `/faq` to sitemap with `changeFrequency: "monthly"` and `priority: 0.5`
 - **fix**: Remove global `overflow: hidden` from `html/body` — FAQ page now uses natural document scroll; landing page retains its own `overflow-hidden` on `<main>`
+- **fix**: Reduce Bricolage Grotesque to weights `600` and `800` only — `400`, `500`, `700` were never applied via the font variable
+- **fix**: Pin sitemap `lastModified` to `2026-02-24` to avoid unnecessary re-crawls on every build
+- **fix**: Replace French-only FAQ metadata description with English
+- **chore**: Bump `@types/node` from `^20` to `^25`
