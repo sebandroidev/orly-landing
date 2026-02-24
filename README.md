@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Orly — Landing Page
+
+Waitlist landing page for [Orly](https://orly.app), a community platform for discovering and recommending local services.
+
+## Stack
+
+- **Framework**: Next.js 16.1.6 (App Router, Turbopack)
+- **UI**: React 19, TypeScript, Tailwind CSS v4
+- **Animations**: Framer Motion 12
+- **Font**: Bricolage Grotesque (Google Fonts)
+- **Icons**: HugeIcons (`@hugeicons/react`)
+- **Confetti**: `canvas-confetti` (dynamic import)
+
+## Features
+
+- **Waitlist form** — Two-step flow: email → first/last name → success with confetti
+- **Bilingual** — French / English toggle, persists across page loads
+- **Dark / light theme** — Toggle with flash-free SSR (inline script in `<head>`)
+- **Animated logo scene** — Framer Motion entrance animations
+- **FAQ page** — Accordion layout at `/faq`
+- **SEO** — JSON-LD structured data (SoftwareApplication + Organization), Open Graph, Twitter card, dynamic OG image (edge runtime), sitemap, robots.txt, Google Search Console verification, smart app banners
+
+## Routes
+
+| Route | Type | Description |
+|-------|------|-------------|
+| `/` | Static | Landing page + waitlist form |
+| `/faq` | Static | FAQ accordion |
+| `/opengraph-image` | Dynamic (edge) | Auto-generated OG image |
+| `/sitemap.xml` | Static | XML sitemap |
+| `/robots.txt` | Static | Crawl rules |
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Copy `.env.local.example` and fill in the values (or create `.env.local` directly):
 
-## Learn More
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `NEXT_PUBLIC_API_URL` | No | Waitlist API endpoint. Defaults to `https://api.orly.app/api/v1/join` |
+| `NEXT_PUBLIC_INSTAGRAM_URL` | No | Instagram URL — enables Instagram icon in footer |
+| `NEXT_PUBLIC_LINKEDIN_URL` | No | LinkedIn URL — enables LinkedIn icon in footer |
+| `NEXT_PUBLIC_APPLE_APP_ID` | No | App Store app ID — enables Apple smart app banner |
+| `NEXT_PUBLIC_GOOGLE_PLAY_APP_ID` | No | Play Store app ID — enables Android smart app banner |
+| `GOOGLE_SITE_VERIFICATION` | No | Google Search Console verification token |
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+app/
+├── components/
+│   ├── Landing.tsx         # Main page layout; owns lang + theme state
+│   ├── EmailForm.tsx       # Waitlist form (idle → dialog → loading → success)
+│   ├── LogoScene.tsx       # Animated logo entrance
+│   ├── Logo.tsx            # SVG logo component
+│   ├── FaqPage.tsx         # Full FAQ page content
+│   ├── FaqAccordion.tsx    # Reusable accordion section
+│   ├── LanguageToggle.tsx  # FR/EN dropdown
+│   ├── ThemeToggle.tsx     # Dark/light icon button
+│   └── Footer.tsx          # Social links, FAQ link, copyright
+├── faq/
+│   └── page.tsx            # /faq route
+├── globals.css             # Tailwind v4, CSS vars (dark + light), base resets
+├── layout.tsx              # Root layout: font, metadata, theme flash-prevention script
+├── opengraph-image.tsx     # Edge OG image (1200×630)
+├── page.tsx                # Home route with JSON-LD structured data
+├── robots.ts               # robots.txt generation
+└── sitemap.ts              # sitemap.xml generation
+public/
+├── logo-orly.svg
+└── logo-background-orly.svg
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Scripts
 
-## Deploy on Vercel
+```bash
+npm run dev     # Start dev server (Turbopack)
+npm run build   # Production build
+npm run start   # Start production server
+npm run lint    # ESLint
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Changelog
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 2026-02-24
+
+- **fix**: Escape `<` as `\u003c` in JSON-LD serialization (`app/page.tsx`) to prevent any `</script>` sequence from breaking out of the script tag
+- **fix**: Add `/faq` route to `sitemap.ts` with `changeFrequency: "monthly"` and `priority: 0.5`
