@@ -92,5 +92,10 @@ npm run lint    # ESLint
 
 ### 2026-02-24
 
-- **fix**: Escape `<` as `\u003c` in JSON-LD serialization (`app/page.tsx`) to prevent any `</script>` sequence from breaking out of the script tag
-- **fix**: Add `/faq` route to `sitemap.ts` with `changeFrequency: "monthly"` and `priority: 0.5`
+- **feat**: Build out full landing page — animated `LogoScene`, bilingual hero (FR/EN), `EmailForm` two-step waitlist flow with confetti, `LanguageToggle`, `ThemeToggle`, `Footer`
+- **feat**: `FaqPage` and `FaqAccordion` — bilingual FAQ with users and merchants sections, accessible accordion (ARIA)
+- **feat**: SEO — OG image (edge runtime), `robots.ts`, `sitemap.ts`, JSON-LD structured data, Open Graph, Twitter card, smart app banners, GSC verification
+- **feat**: Bricolage Grotesque font, dark/light theme with flash-free SSR, CSS vars for both modes
+- **fix**: Escape `<` as `\u003c` in JSON-LD serialization (`app/page.tsx`) to prevent `</script>` injection
+- **fix**: Add `/faq` to sitemap with `changeFrequency: "monthly"` and `priority: 0.5`
+- **fix**: Remove global `overflow: hidden` from `html/body` — FAQ page now uses natural document scroll; landing page retains its own `overflow-hidden` on `<main>`
