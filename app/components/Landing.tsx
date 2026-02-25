@@ -10,11 +10,11 @@ import EmailForm from "./EmailForm";
 const copy = {
   fr: {
     headline: "Découvrez tout local",
-    sub: "La plateforme communautaire pour trouver les services locaux autour de vous.",
+    sub: "Trouver les meilleures adresses et services tout autour de vous.",
   },
   en: {
     headline: "Discover what\u2019s around you",
-    sub: "The community platform to find local services around you.",
+    sub: "Find trusted local businesses your neighbors love.",
   },
 };
 
