@@ -9,7 +9,7 @@ type FormState = "idle" | "dialog" | "loading" | "success";
 const copy = {
   fr: {
     placeholder: "Votre adresse email",
-    submit: "Rejoindre",
+    submit: "Rejoindre la liste",
     dialogTitle: "Encore une chose\u2026",
     dialogSub: "Comment doit-on vous appeler\u00a0?",
     firstName: "Prénom",
