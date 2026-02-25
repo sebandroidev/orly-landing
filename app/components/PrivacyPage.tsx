@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import LanguageToggle, { type Lang } from "./LanguageToggle";
-import ThemeToggle, { type Theme } from "./ThemeToggle";
+import LanguageToggle from "./LanguageToggle";
+import ThemeToggle from "./ThemeToggle";
+import { useAppPreferences } from "../hooks/useAppPreferences";
 
 const copy = {
   fr: {
@@ -37,7 +37,6 @@ const copy = {
         body: "Pour toute question relative à cette politique ou à vos données personnelles, écrivez-nous à support@orly.app. Nous répondons dans les 72 heures ouvrées.",
       },
     ],
-    footer: "© 2026 Orly",
   },
   en: {
     back: "← Back",
@@ -69,7 +68,6 @@ const copy = {
         body: "For any questions about this policy or your personal data, email us at support@orly.app. We respond within 72 business hours.",
       },
     ],
-    footer: "© 2026 Orly",
   },
 };
 
@@ -93,27 +91,8 @@ const itemVariants = {
 };
 
 export default function PrivacyPage() {
-  const [lang, setLang] = useState<Lang>("fr");
-  const [theme, setTheme] = useState<Theme>("dark");
-  const isDark = theme === "dark";
+  const { lang, setLang, theme, setTheme, isDark } = useAppPreferences("fr");
   const t = copy[lang];
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("orly-theme") as Theme | null;
-    if (savedTheme === "light") setTheme("light");
-    const savedLang = localStorage.getItem("orly-lang") as Lang | null;
-    if (savedLang === "fr" || savedLang === "en") setLang(savedLang);
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("light", !isDark);
-    localStorage.setItem("orly-theme", theme);
-  }, [isDark, theme]);
-
-  useEffect(() => {
-    document.documentElement.lang = lang;
-    localStorage.setItem("orly-lang", lang);
-  }, [lang]);
 
   return (
     <div className="relative min-h-screen">
@@ -182,7 +161,7 @@ export default function PrivacyPage() {
           {/* Footer */}
           <motion.div variants={itemVariants}>
             <p className="text-xs" style={{ color: "var(--fg-dim)" }}>
-              {t.footer}
+              © {new Date().getFullYear()} Orly
             </p>
           </motion.div>
         </motion.div>

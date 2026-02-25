@@ -19,11 +19,18 @@ const copy = {
     cancel: "Annuler",
     successTitle: "Vous êtes sur la liste\u00a0!",
     successSub: "Nous vous contacterons très bientôt.",
+    alreadyTitle: "Vous êtes déjà sur la liste\u00a0!",
+    alreadySub: "Nous vous contacterons bientôt.",
     joinAgain: "Rejoindre à nouveau",
     privacy: "En vous inscrivant, vous acceptez notre ",
     privacyLink: "Politique de confidentialité",
+    tosLink: "Conditions d'utilisation",
     error: "Une erreur est survenue. Réessayez.",
     rateLimited: "Trop de tentatives. Réessayez dans une minute.",
+    emailInvalid: "Veuillez entrer une adresse email valide.",
+    fieldRequired: "Ce champ est obligatoire.",
+    liveDialog: "Boîte de dialogue ouverte",
+    liveSubmitting: "Envoi en cours\u2026",
   },
   en: {
     placeholder: "Your email address",
@@ -36,13 +43,24 @@ const copy = {
     cancel: "Cancel",
     successTitle: "You\u2019re on the list!",
     successSub: "We\u2019ll be in touch very soon.",
+    alreadyTitle: "You\u2019re already on the list!",
+    alreadySub: "We\u2019ll be in touch soon.",
     joinAgain: "Join again",
     privacy: "By joining, you agree to our ",
     privacyLink: "Privacy Policy",
+    tosLink: "Terms of Service",
     error: "Something went wrong. Please try again.",
     rateLimited: "Too many attempts. Try again in a minute.",
+    emailInvalid: "Please enter a valid email address.",
+    fieldRequired: "This field is required.",
+    liveDialog: "Name entry dialog opened",
+    liveSubmitting: "Submitting\u2026",
   },
 };
+
+function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+}
 
 interface Props {
   lang: Lang;
@@ -57,19 +75,45 @@ export default function EmailForm({ lang, isDark }: Props) {
   const [lastName, setLastName] = useState("");
   const [focused, setFocused] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [firstNameError, setFirstNameError] = useState<string | null>(null);
+  const [lastNameError, setLastNameError] = useState<string | null>(null);
+  const [isDuplicate, setIsDuplicate] = useState(false);
+  const [liveMessage, setLiveMessage] = useState("");
   const firstNameRef = useRef<HTMLInputElement>(null);
 
   const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) return;
+    if (!isValidEmail(email)) {
+      setEmailError(t.emailInvalid);
+      return;
+    }
+    setEmailError(null);
     setState("dialog");
+    setLiveMessage(t.liveDialog);
     setTimeout(() => firstNameRef.current?.focus(), 100);
   };
 
   const handleDialogSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    let hasError = false;
+    if (!firstName.trim()) {
+      setFirstNameError(t.fieldRequired);
+      hasError = true;
+    }
+    if (!lastName.trim()) {
+      setLastNameError(t.fieldRequired);
+      hasError = true;
+    }
+    if (hasError) return;
+
     setError(null);
+    setFirstNameError(null);
+    setLastNameError(null);
     setState("loading");
+    setLiveMessage(t.liveSubmitting);
 
     try {
       const endpoint = process.env.NEXT_PUBLIC_API_URL ?? "https://api.orly.app/api/v1/join";
@@ -80,22 +124,28 @@ export default function EmailForm({ lang, isDark }: Props) {
       });
 
       if (res.status === 409) {
-        // Already registered — treat as success, no confetti
+        setIsDuplicate(true);
         setState("success");
+        setLiveMessage(t.alreadyTitle);
         return;
       }
 
       if (!res.ok) {
         setState("dialog");
-        setError(res.status === 429 ? t.rateLimited : t.error);
+        const msg = res.status === 429 ? t.rateLimited : t.error;
+        setError(msg);
+        setLiveMessage(msg);
         return;
       }
 
+      setIsDuplicate(false);
       setState("success");
+      setLiveMessage(t.successTitle);
       triggerConfetti();
     } catch {
       setState("dialog");
       setError(t.error);
+      setLiveMessage(t.error);
     }
   };
 
@@ -115,6 +165,11 @@ export default function EmailForm({ lang, isDark }: Props) {
     setFirstName("");
     setLastName("");
     setError(null);
+    setEmailError(null);
+    setFirstNameError(null);
+    setLastNameError(null);
+    setIsDuplicate(false);
+    setLiveMessage("");
     setState("idle");
   };
 
@@ -152,6 +207,11 @@ export default function EmailForm({ lang, isDark }: Props) {
 
   return (
     <div className="relative flex w-full flex-col items-center gap-3">
+      {/* Screen reader live region for state announcements */}
+      <div role="status" aria-live="polite" className="sr-only">
+        {liveMessage}
+      </div>
+
       <AnimatePresence mode="wait">
         {state === "success" ? (
           <motion.div
@@ -166,9 +226,11 @@ export default function EmailForm({ lang, isDark }: Props) {
               className="text-lg font-semibold sm:text-xl"
               style={{ fontFamily: "var(--font-bricolage)", color: "var(--foreground)" }}
             >
-              {t.successTitle}
+              {isDuplicate ? t.alreadyTitle : t.successTitle}
             </p>
-            <p className="text-sm" style={{ color: "var(--fg-dim)" }}>{t.successSub}</p>
+            <p className="text-sm" style={{ color: "var(--fg-dim)" }}>
+              {isDuplicate ? t.alreadySub : t.successSub}
+            </p>
             <button
               onClick={handleReset}
               className="mt-2 text-xs underline underline-offset-4 transition-colors"
@@ -185,23 +247,33 @@ export default function EmailForm({ lang, isDark }: Props) {
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.35, ease: "easeOut" }}
             onSubmit={handleEmailSubmit}
-            className="flex w-full flex-col gap-3 sm:flex-row"
+            className="flex w-full flex-col gap-3 sm:flex-row sm:items-start"
           >
             <motion.div
               className="relative flex-1"
               animate={{ scale: focused ? 1.01 : 1 }}
               transition={{ type: "spring", stiffness: 400, damping: 28 }}
             >
+              <label htmlFor="email" className="sr-only">
+                {t.placeholder}
+              </label>
               <input
+                id="email"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => { setEmail(e.target.value); setEmailError(null); }}
                 onFocus={() => setFocused(true)}
                 onBlur={() => setFocused(false)}
                 placeholder={t.placeholder}
                 required
+                aria-describedby={emailError ? "email-error" : undefined}
                 className={`w-full rounded-xl border px-4 py-3 text-sm outline-none transition-all duration-200 ${inputCls}`}
               />
+              {emailError && (
+                <p id="email-error" className="mt-1 text-xs text-red-400">
+                  {emailError}
+                </p>
+              )}
             </motion.div>
             <motion.button
               type="submit"
@@ -216,7 +288,7 @@ export default function EmailForm({ lang, isDark }: Props) {
         )}
       </AnimatePresence>
 
-      {/* Privacy notice */}
+      {/* Privacy + ToS notice */}
       {state !== "success" && (
         <p className="text-center text-xs" style={{ color: "var(--fg-dim)", opacity: 0.6 }}>
           {t.privacy}
@@ -225,6 +297,13 @@ export default function EmailForm({ lang, isDark }: Props) {
             className="underline underline-offset-2 transition-opacity hover:opacity-80"
           >
             {t.privacyLink}
+          </Link>
+          {" & "}
+          <Link
+            href="/tos"
+            className="underline underline-offset-2 transition-opacity hover:opacity-80"
+          >
+            {t.tosLink}
           </Link>
           .
         </p>
@@ -263,23 +342,46 @@ export default function EmailForm({ lang, isDark }: Props) {
               <p className={`mt-0.5 mb-5 text-sm ${dialogSubCls}`}>{t.dialogSub}</p>
 
               <form onSubmit={handleDialogSubmit} className="flex flex-col gap-3">
-                <input
-                  ref={firstNameRef}
-                  type="text"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  placeholder={t.firstName}
-                  required
-                  className={`w-full rounded-xl border px-4 py-3 text-sm outline-none transition-colors ${dialogInputCls}`}
-                />
-                <input
-                  type="text"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  placeholder={t.lastName}
-                  required
-                  className={`w-full rounded-xl border px-4 py-3 text-sm outline-none transition-colors ${dialogInputCls}`}
-                />
+                <div>
+                  <label htmlFor="firstName" className="sr-only">
+                    {t.firstName}
+                  </label>
+                  <input
+                    id="firstName"
+                    ref={firstNameRef}
+                    type="text"
+                    value={firstName}
+                    onChange={(e) => { setFirstName(e.target.value); setFirstNameError(null); }}
+                    placeholder={t.firstName}
+                    aria-describedby={firstNameError ? "firstName-error" : undefined}
+                    className={`w-full rounded-xl border px-4 py-3 text-sm outline-none transition-colors ${dialogInputCls}`}
+                  />
+                  {firstNameError && (
+                    <p id="firstName-error" className="mt-1 text-xs text-red-400">
+                      {firstNameError}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label htmlFor="lastName" className="sr-only">
+                    {t.lastName}
+                  </label>
+                  <input
+                    id="lastName"
+                    type="text"
+                    value={lastName}
+                    onChange={(e) => { setLastName(e.target.value); setLastNameError(null); }}
+                    placeholder={t.lastName}
+                    aria-describedby={lastNameError ? "lastName-error" : undefined}
+                    className={`w-full rounded-xl border px-4 py-3 text-sm outline-none transition-colors ${dialogInputCls}`}
+                  />
+                  {lastNameError && (
+                    <p id="lastName-error" className="mt-1 text-xs text-red-400">
+                      {lastNameError}
+                    </p>
+                  )}
+                </div>
 
                 {error && <p className="text-xs text-red-400">{error}</p>}
 
@@ -294,12 +396,18 @@ export default function EmailForm({ lang, isDark }: Props) {
                   <motion.button
                     type="submit"
                     disabled={state === "loading"}
+                    aria-busy={state === "loading"}
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.98 }}
                     className={`flex flex-1 items-center justify-center rounded-xl py-3 text-sm font-semibold disabled:opacity-60 ${dialogConfirmCls}`}
                   >
                     {state === "loading" ? (
-                      <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden>
+                      <svg
+                        className="h-4 w-4 animate-spin"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                      >
                         <circle className="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                         <path className="opacity-80" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                       </svg>

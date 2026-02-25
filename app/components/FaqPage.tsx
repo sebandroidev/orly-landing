@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import LanguageToggle, { type Lang } from "./LanguageToggle";
-import ThemeToggle, { type Theme } from "./ThemeToggle";
+import LanguageToggle from "./LanguageToggle";
+import ThemeToggle from "./ThemeToggle";
 import FaqAccordion from "./FaqAccordion";
+import { useAppPreferences } from "../hooks/useAppPreferences";
 
 const copy = {
   fr: {
@@ -64,7 +64,6 @@ const copy = {
         ],
       },
     },
-    footer: "© 2026 Orly",
   },
   en: {
     back: "← Back",
@@ -122,7 +121,6 @@ const copy = {
         ],
       },
     },
-    footer: "© 2026 Orly",
   },
 };
 
@@ -147,28 +145,8 @@ const itemVariants = {
 };
 
 export default function FaqPage() {
-  const [lang, setLang] = useState<Lang>("fr");
-  const [theme, setTheme] = useState<Theme>("dark");
-  const isDark = theme === "dark";
+  const { lang, setLang, theme, setTheme, isDark } = useAppPreferences("fr");
   const t = copy[lang];
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("orly-theme") as Theme | null;
-    if (savedTheme === "light") setTheme("light");
-    const savedLang = localStorage.getItem("orly-lang") as Lang | null;
-    if (savedLang === "fr" || savedLang === "en") setLang(savedLang);
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("light", !isDark);
-    localStorage.setItem("orly-theme", theme);
-  }, [isDark, theme]);
-
-  // Keep <html lang> and localStorage in sync
-  useEffect(() => {
-    document.documentElement.lang = lang;
-    localStorage.setItem("orly-lang", lang);
-  }, [lang]);
 
   return (
     <div className="relative min-h-screen">
@@ -246,8 +224,15 @@ export default function FaqPage() {
               >
                 {lang === "fr" ? "Confidentialité" : "Privacy"}
               </Link>
+              <Link
+                href="/tos"
+                className="text-xs transition-opacity duration-150 hover:opacity-70"
+                style={{ color: "var(--fg-dim)" }}
+              >
+                {lang === "fr" ? "Conditions" : "Terms"}
+              </Link>
               <p className="text-xs" style={{ color: "var(--fg-dim)" }}>
-                {t.footer}
+                © {new Date().getFullYear()} Orly
               </p>
             </motion.div>
           </motion.div>
