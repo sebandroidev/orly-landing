@@ -90,6 +90,23 @@ npm run lint    # ESLint
 
 ## Changelog
 
+### 2026-02-25
+
+- **feat**: `FAQPage` JSON-LD structured data on `/faq` — 10 Q&A items, enables Google FAQ rich results in SERPs
+- **feat**: Dedicated OG image for `/faq` route (`app/faq/opengraph-image.tsx`, edge runtime, 1200×630)
+- **feat**: Language preference persisted to `localStorage` (`orly-lang`) and restored before hydration via inline `<head>` script — `document.documentElement.lang` stays in sync on toggle
+- **feat**: Security response headers — `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `X-DNS-Prefetch-Control`, `Permissions-Policy`; `X-Powered-By` header removed
+- **fix**: FAQ page title was rendered as "FAQ — Orly | Orly" due to root layout `title.template` — changed to `{ absolute: "FAQ | Orly" }`
+- **fix**: `Footer` imported inside `Landing` (client component) was silently bundled client-side — now passed as a `ReactNode` prop from `app/page.tsx` (server component), keeping `Footer` server-only
+- **fix**: LCP penalty from `<h1>` starting at `opacity: 0` — added `initial={false}` to `AnimatePresence` wrappers so headline and sub-headline render immediately on page load; language-switch animations unaffected
+- **fix**: `SoftwareApplication` JSON-LD schema missing `image` property — added `https://orly.app/opengraph-image`
+- **fix**: `Organization` JSON-LD description inconsistent with site copy ("in Africa") — aligned to "around you"
+- **fix**: Sitemap `lastModified` was hardcoded to `2026-02-24` — changed to `new Date()` to reflect each build
+- **chore**: Canonical URLs added to both `/` and `/faq` metadata
+- **chore**: `openGraph` and `twitter` metadata added to FAQ route
+- **chore**: `viewport` export with `themeColor` (dark/light) — replaces deprecated `themeColor` in `metadata`
+- **chore**: `poweredByHeader: false` in `next.config.ts`
+
 ### 2026-02-24
 
 - **feat**: Build out full landing page — animated `LogoScene`, bilingual hero (FR/EN), `EmailForm` two-step waitlist flow with confetti, `LanguageToggle`, `ThemeToggle`, `Footer`
