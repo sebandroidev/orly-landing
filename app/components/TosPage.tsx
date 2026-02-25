@@ -14,7 +14,7 @@ const copy = {
     sections: [
       {
         title: "Acceptation des conditions",
-        body: "En accédant au site orly.app ou en vous inscrivant à la liste d'attente d'Orly, vous acceptez les présentes conditions d'utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser nos services.",
+        body: "En accédant au site getorly.com ou en vous inscrivant à la liste d'attente d'Orly, vous acceptez les présentes conditions d'utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser nos services.",
       },
       {
         title: "Description du service",
@@ -26,7 +26,7 @@ const copy = {
       },
       {
         title: "Propriété intellectuelle",
-        body: "Toutes les marques, logos, textes, images et autres contenus présents sur orly.app sont la propriété exclusive d'Orly ou de ses partenaires, et sont protégés par les lois applicables sur la propriété intellectuelle. Toute reproduction non autorisée est interdite.",
+        body: "Toutes les marques, logos, textes, images et autres contenus présents sur getorly.com sont la propriété exclusive d'Orly ou de ses partenaires, et sont protégés par les lois applicables sur la propriété intellectuelle. Toute reproduction non autorisée est interdite.",
       },
       {
         title: "Limitation de responsabilité",
@@ -49,7 +49,7 @@ const copy = {
     sections: [
       {
         title: "Acceptance of terms",
-        body: "By accessing orly.app or signing up for the Orly waitlist, you agree to these Terms of Service. If you do not agree, please do not use our services.",
+        body: "By accessing getorly.com or signing up for the Orly waitlist, you agree to these Terms of Service. If you do not agree, please do not use our services.",
       },
       {
         title: "Service description",
@@ -61,7 +61,7 @@ const copy = {
       },
       {
         title: "Intellectual property",
-        body: "All trademarks, logos, text, images, and other content on orly.app are the exclusive property of Orly or its partners, and are protected by applicable intellectual property laws. Unauthorized reproduction is prohibited.",
+        body: "All trademarks, logos, text, images, and other content on getorly.com are the exclusive property of Orly or its partners, and are protected by applicable intellectual property laws. Unauthorized reproduction is prohibited.",
       },
       {
         title: "Limitation of liability",

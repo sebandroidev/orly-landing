@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://orly.app/sitemap.xml",
+    sitemap: "https://getorly.com/sitemap.xml",
   };
 }

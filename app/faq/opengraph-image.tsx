@@ -93,7 +93,7 @@ export default function OgImage() {
             fontSize: 20,
           }}
         >
-          orly.app/faq
+          getorly.com/faq
         </div>
       </div>
     ),

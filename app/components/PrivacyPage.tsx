@@ -14,7 +14,7 @@ const copy = {
     sections: [
       {
         title: "Introduction",
-        body: "Orly (« nous ») s'engage à protéger vos données personnelles. Cette politique explique quelles données nous collectons, pourquoi, et comment vous pouvez exercer vos droits. Elle s'applique au site orly.app et à l'application Orly.",
+        body: "Orly (« nous ») s'engage à protéger vos données personnelles. Cette politique explique quelles données nous collectons, pourquoi, et comment vous pouvez exercer vos droits. Elle s'applique au site getorly.com et à l'application Orly.",
       },
       {
         title: "Données collectées",
@@ -45,7 +45,7 @@ const copy = {
     sections: [
       {
         title: "Introduction",
-        body: "Orly (\u201cwe\u201d) is committed to protecting your personal data. This policy explains what data we collect, why we collect it, and how you can exercise your rights. It applies to orly.app and the Orly app.",
+        body: "Orly (\u201cwe\u201d) is committed to protecting your personal data. This policy explains what data we collect, why we collect it, and how you can exercise your rights. It applies to getorly.com and the Orly app.",
       },
       {
         title: "Data we collect",

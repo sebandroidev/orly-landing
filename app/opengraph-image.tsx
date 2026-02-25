@@ -75,7 +75,7 @@ export default function OgImage() {
             fontSize: 20,
           }}
         >
-          orly.app
+          getorly.com
         </div>
       </div>
     ),
