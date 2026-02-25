@@ -64,6 +64,7 @@ export default function FaqAccordion({ title, items, sectionId }: Props) {
                 onClick={() => toggle(i)}
                 aria-expanded={isOpen}
                 aria-controls={answerId}
+                aria-label={`${isOpen ? "Collapse" : "Expand"}: ${item.q}`}
                 className={`flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors duration-150 ${
                   isOpen ? "bg-[var(--surface)]" : "hover:bg-[var(--surface)]"
                 }`}

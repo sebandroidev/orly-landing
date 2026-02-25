@@ -145,7 +145,7 @@ const itemVariants = {
 };
 
 export default function FaqPage() {
-  const { lang, setLang, theme, setTheme, isDark } = useAppPreferences("fr");
+  const { lang, setLang, theme, setTheme, isDark } = useAppPreferences("en");
   const t = copy[lang];
 
   return (
