@@ -238,7 +238,14 @@ export default function FaqPage() {
             </motion.div>
 
             {/* Footer */}
-            <motion.div variants={itemVariants}>
+            <motion.div variants={itemVariants} className="flex items-center gap-4">
+              <Link
+                href="/privacy"
+                className="text-xs transition-opacity duration-150 hover:opacity-70"
+                style={{ color: "var(--fg-dim)" }}
+              >
+                {lang === "fr" ? "Confidentialité" : "Privacy"}
+              </Link>
               <p className="text-xs" style={{ color: "var(--fg-dim)" }}>
                 {t.footer}
               </p>
