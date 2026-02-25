@@ -83,7 +83,7 @@ export default function Landing({ footer }: { footer: ReactNode }) {
 
         {/* Headline */}
         <div className="overflow-hidden text-center">
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait" initial={false}>
             <motion.h1
               key={lang + "-headline"}
               initial={{ opacity: 0, y: 14 }}
@@ -103,7 +103,7 @@ export default function Landing({ footer }: { footer: ReactNode }) {
         </div>
 
         {/* Sub-headline */}
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" initial={false}>
           <motion.p
             key={lang + "-sub"}
             initial={{ opacity: 0, y: 8 }}
