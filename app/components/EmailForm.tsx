@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { type Lang } from "./LanguageToggle";
 
@@ -19,6 +20,8 @@ const copy = {
     successTitle: "Vous êtes sur la liste\u00a0!",
     successSub: "Nous vous contacterons très bientôt.",
     joinAgain: "Rejoindre à nouveau",
+    privacy: "En vous inscrivant, vous acceptez notre ",
+    privacyLink: "Politique de confidentialité",
     error: "Une erreur est survenue. Réessayez.",
     rateLimited: "Trop de tentatives. Réessayez dans une minute.",
   },
@@ -34,6 +37,8 @@ const copy = {
     successTitle: "You\u2019re on the list!",
     successSub: "We\u2019ll be in touch very soon.",
     joinAgain: "Join again",
+    privacy: "By joining, you agree to our ",
+    privacyLink: "Privacy Policy",
     error: "Something went wrong. Please try again.",
     rateLimited: "Too many attempts. Try again in a minute.",
   },
@@ -146,7 +151,7 @@ export default function EmailForm({ lang, isDark }: Props) {
     : "bg-black text-white";
 
   return (
-    <div className="relative w-full">
+    <div className="relative flex w-full flex-col items-center gap-3">
       <AnimatePresence mode="wait">
         {state === "success" ? (
           <motion.div
@@ -210,6 +215,20 @@ export default function EmailForm({ lang, isDark }: Props) {
           </motion.form>
         )}
       </AnimatePresence>
+
+      {/* Privacy notice */}
+      {state !== "success" && (
+        <p className="text-center text-xs" style={{ color: "var(--fg-dim)", opacity: 0.6 }}>
+          {t.privacy}
+          <Link
+            href="/privacy"
+            className="underline underline-offset-2 transition-opacity hover:opacity-80"
+          >
+            {t.privacyLink}
+          </Link>
+          .
+        </p>
+      )}
 
       {/* Dialog overlay */}
       <AnimatePresence>

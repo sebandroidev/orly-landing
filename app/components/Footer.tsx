@@ -43,6 +43,16 @@ export default function Footer() {
 
       <span style={{ color: "var(--border-subtle)" }}>·</span>
 
+      <Link
+        href="/privacy"
+        className="text-xs transition-opacity duration-150 hover:opacity-70"
+        style={{ color: "var(--fg-dim)" }}
+      >
+        Privacy
+      </Link>
+
+      <span style={{ color: "var(--border-subtle)" }}>·</span>
+
       <span className="text-xs" style={{ color: "var(--fg-dim)" }}>
         © 2026 Orly
       </span>
