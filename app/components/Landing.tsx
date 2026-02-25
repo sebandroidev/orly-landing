@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import LogoScene from "./LogoScene";
 import LanguageToggle, { type Lang } from "./LanguageToggle";
 import ThemeToggle, { type Theme } from "./ThemeToggle";
 import EmailForm from "./EmailForm";
-import Footer from "./Footer";
 
 const copy = {
   fr: {
@@ -30,16 +29,18 @@ const fadeUp = (delay: number) => ({
   },
 });
 
-export default function Landing() {
+export default function Landing({ footer }: { footer: ReactNode }) {
   const [lang, setLang] = useState<Lang>("en");
   const [theme, setTheme] = useState<Theme>("dark");
   const isDark = theme === "dark";
   const t = copy[lang];
 
-  // Read persisted theme after hydration (avoids SSR mismatch)
+  // Read persisted theme and lang after hydration (avoids SSR mismatch)
   useEffect(() => {
-    const saved = localStorage.getItem("orly-theme") as Theme | null;
-    if (saved === "light") setTheme("light");
+    const savedTheme = localStorage.getItem("orly-theme") as Theme | null;
+    if (savedTheme === "light") setTheme("light");
+    const savedLang = localStorage.getItem("orly-lang") as Lang | null;
+    if (savedLang === "fr" || savedLang === "en") setLang(savedLang);
   }, []);
 
   // Keep <html> class and localStorage in sync
@@ -47,6 +48,12 @@ export default function Landing() {
     document.documentElement.classList.toggle("light", !isDark);
     localStorage.setItem("orly-theme", theme);
   }, [isDark, theme]);
+
+  // Keep <html lang> and localStorage in sync
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    localStorage.setItem("orly-lang", lang);
+  }, [lang]);
 
   return (
     <main className="relative flex h-[100dvh] w-full flex-col items-center justify-center overflow-hidden px-5 pb-16">
@@ -67,7 +74,7 @@ export default function Landing() {
         <ThemeToggle theme={theme} onToggle={setTheme} isDark={isDark} />
       </motion.div>
 
-      <Footer />
+      {footer}
 
       {/* Content stack */}
       <div className="flex w-full max-w-sm flex-col items-center gap-4 sm:gap-3 md:max-w-2xl">

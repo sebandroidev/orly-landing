@@ -153,14 +153,22 @@ export default function FaqPage() {
   const t = copy[lang];
 
   useEffect(() => {
-    const saved = localStorage.getItem("orly-theme") as Theme | null;
-    if (saved === "light") setTheme("light");
+    const savedTheme = localStorage.getItem("orly-theme") as Theme | null;
+    if (savedTheme === "light") setTheme("light");
+    const savedLang = localStorage.getItem("orly-lang") as Lang | null;
+    if (savedLang === "fr" || savedLang === "en") setLang(savedLang);
   }, []);
 
   useEffect(() => {
     document.documentElement.classList.toggle("light", !isDark);
     localStorage.setItem("orly-theme", theme);
   }, [isDark, theme]);
+
+  // Keep <html lang> and localStorage in sync
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    localStorage.setItem("orly-lang", lang);
+  }, [lang]);
 
   return (
     <div className="relative min-h-screen">

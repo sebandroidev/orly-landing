@@ -1,4 +1,5 @@
 import Landing from "./components/Landing";
+import Footer from "./components/Footer";
 
 const jsonLd = [
   {
@@ -9,6 +10,7 @@ const jsonLd = [
       "Community platform to find, recommend, and discover local services. Restaurants, artisans, hairdressers — all near you.",
     applicationCategory: "LifestyleApplication",
     operatingSystem: "iOS, Android",
+    image: "https://orly.app/opengraph-image",
     offers: {
       "@type": "Offer",
       price: "0",
@@ -23,7 +25,7 @@ const jsonLd = [
     url: "https://orly.app",
     logo: "https://orly.app/logo-orly.svg",
     description:
-      "Community platform for discovering and valorising local services in Africa.",
+      "Community platform to find, recommend, and discover local services around you.",
     sameAs: [
       process.env.NEXT_PUBLIC_INSTAGRAM_URL,
       process.env.NEXT_PUBLIC_LINKEDIN_URL,
@@ -41,7 +43,7 @@ export default function Home() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }}
         />
       ))}
-      <Landing />
+      <Landing footer={<Footer />} />
     </>
   );
 }
