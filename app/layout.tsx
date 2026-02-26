@@ -23,7 +23,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "Orly — Discover Local Services Around You",
+    default: "Orly — Discover Local Businesses Your Neighbors Love",
     template: "%s | Orly",
   },
   description:
@@ -33,14 +33,14 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: BASE_URL,
     siteName: "Orly",
-    title: "Orly — Discover Local Services Around You",
+    title: "Orly — Discover Local Businesses Your Neighbors Love",
     description:
       "Orly is the community platform to find, recommend, and discover local services. Restaurants, artisans, hairdressers — all near you.",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Orly — Discover Local Services Around You" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Orly — Discover Local Businesses Your Neighbors Love" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Orly — Discover Local Services Around You",
+    title: "Orly — Discover Local Businesses Your Neighbors Love",
     description:
       "Orly is the community platform to find, recommend, and discover local services.",
     images: ["/og-image.png"],
