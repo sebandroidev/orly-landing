@@ -36,14 +36,14 @@ export const metadata: Metadata = {
     title: "Orly — Discover Local Services Around You",
     description:
       "Orly is the community platform to find, recommend, and discover local services. Restaurants, artisans, hairdressers — all near you.",
-    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Orly" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Orly — Discover Local Services Around You" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Orly — Discover Local Services Around You",
     description:
       "Orly is the community platform to find, recommend, and discover local services.",
-    images: ["/opengraph-image"],
+    images: ["/og-image.png"],
   },
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION,
