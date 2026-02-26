@@ -10,20 +10,20 @@ const jsonLd = [
       "Community platform to find, recommend, and discover local services. Restaurants, artisans, hairdressers — all near you.",
     applicationCategory: "LifestyleApplication",
     operatingSystem: "iOS, Android",
-    image: "https://getorly.com/opengraph-image",
+    image: "https://www.getorly.com/opengraph-image",
     offers: {
       "@type": "Offer",
       price: "0",
       priceCurrency: "USD",
     },
-    url: "https://getorly.com",
+    url: "https://www.getorly.com",
   },
   {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "Orly",
-    url: "https://getorly.com",
-    logo: "https://getorly.com/logo-orly.svg",
+    url: "https://www.getorly.com",
+    logo: "https://www.getorly.com/logo-orly.svg",
     description:
       "Community platform to find, recommend, and discover local services around you.",
     sameAs: [

@@ -11,7 +11,7 @@ const bricolage = Bricolage_Grotesque({
   display: "swap",
 });
 
-const BASE_URL = "https://getorly.com";
+const BASE_URL = "https://www.getorly.com";
 
 export const viewport: Viewport = {
   themeColor: [
