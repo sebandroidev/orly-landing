@@ -1,5 +1,4 @@
-import Landing from "./components/Landing";
-import Footer from "./components/Footer";
+import WebsitePage from "./components/WebsitePage";
 
 const jsonLd = [
   {
@@ -40,10 +39,12 @@ export default function Home() {
         <script
           key={i}
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(schema).replace(/</g, "\\u003c"),
+          }}
         />
       ))}
-      <Landing footer={<Footer />} />
+      <WebsitePage />
     </>
   );
 }
